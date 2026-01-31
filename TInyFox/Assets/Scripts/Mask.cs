@@ -10,6 +10,7 @@ public class Mask : MonoBehaviour
     public bool IsMaskActive { get; private set; }
 
     private bool canUse = true;
+    private float lastUseTime = -100f;
 
     void Update()
     {
@@ -23,6 +24,7 @@ public class Mask : MonoBehaviour
     {
         canUse = false;
         IsMaskActive = true;
+        lastUseTime = Time.time;
 
         // Mask effect active
         yield return new WaitForSeconds(activeDuration);
@@ -32,5 +34,24 @@ public class Mask : MonoBehaviour
         // Cooldown
         yield return new WaitForSeconds(cooldownDuration);
         canUse = true;
+    }
+
+    public bool CanUse()
+    {
+        return canUse && !IsMaskActive;
+    }
+
+    // Returns remaining cooldown time in seconds
+    public float GetCooldownTime()
+    {
+        if (IsMaskActive)
+            return 0f;
+
+        if (canUse)
+            return 0f;
+
+        float elapsedSinceUse = Time.time - lastUseTime - activeDuration;
+        float remaining = cooldownDuration - elapsedSinceUse;
+        return Mathf.Max(0f, remaining);
     }
 }

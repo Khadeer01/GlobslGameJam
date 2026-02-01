@@ -1,18 +1,26 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement Settings")]
+    [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSmoothness = 10f;
 
-    [Header("Mouse Look Settings")]
+    [Header("Mouse Look")]
     [SerializeField] private float mouseSensitivity = 200f;
     [SerializeField] private Transform cameraTransform;
 
-    private float xRotation = 0f;
+    private Rigidbody rb;
+    private Vector3 moveInput;
+    private Vector3 smoothMove;
+    private float xRotation;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -20,16 +28,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMouseLook();
-        HandleMovement();
+
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
+        moveInput = (transform.right * x + transform.forward * z).normalized;
     }
 
-    void HandleMovement()
+    void FixedUpdate()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;
-        transform.position += move * moveSpeed * Time.deltaTime;
+        smoothMove = Vector3.Lerp(smoothMove, moveInput, moveSmoothness * Time.fixedDeltaTime);
+        rb.MovePosition(rb.position + smoothMove * moveSpeed * Time.fixedDeltaTime);
     }
 
     void HandleMouseLook()
@@ -39,8 +47,8 @@ public class PlayerController : MonoBehaviour
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
+        cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
 }

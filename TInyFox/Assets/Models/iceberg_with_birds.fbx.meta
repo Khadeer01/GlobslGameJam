@@ -3,7 +3,27 @@ guid: 7de9d595fb7e9fc479c4cdbfe1c24f18
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: blinn1_water
+    second: {fileID: 2100000, guid: 24d0591a4e9511d4aba6eac83cee39b2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: blinn_iceberg
+    second: {fileID: 2100000, guid: d0d93b89d68de0e42b8dab166b8df22a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pinguin_pingvin
+    second: {fileID: 2100000, guid: dae422e46536d2a48b71c1a0ad183d3f, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: bird_standardSurface1_BaseMap
+    second: {fileID: 2800000, guid: 2e074ce8caee7cc448c3cca5250b157d, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

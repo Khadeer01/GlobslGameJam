@@ -33,6 +33,7 @@ public class Mask : MonoBehaviour
 
         // Cooldown
         yield return new WaitForSeconds(cooldownDuration);
+        AudioManager.Play(AudioManager.Sound.MaskOn); 
         canUse = true;
     }
 
